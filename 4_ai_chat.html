@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Recepcjonistka — 3 Tryby</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a1a;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;gap:16px}
+.page-title{color:#fff;font-size:24px;font-weight:700;text-align:center;padding-top:10px}
+.page-subtitle{color:rgba(255,255,255,.5);font-size:14px;text-align:center}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tab{padding:10px 20px;border-radius:100px;border:2px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .3s}
+.tab.active{background:#007aff;border-color:#007aff;color:#fff;box-shadow:0 4px 20px rgba(0,122,255,.4)}
+.tab:hover:not(.active){border-color:rgba(255,255,255,.3);color:#fff}
+.mode-desc{color:rgba(255,255,255,.5);font-size:13px;text-align:center;max-width:380px;line-height:1.5;min-height:40px}
+.mode-desc b{color:rgba(255,255,255,.8)}
+.phone{width:375px;background:#fff;border-radius:44px;overflow:hidden;box-shadow:0 0 0 14px #1d1d1f,0 0 0 16px #333,0 40px 80px rgba(0,0,0,.5)}
+.notch{width:160px;height:34px;background:#1d1d1f;margin:0 auto;border-radius:0 0 20px 20px}
+.call-header{padding:16px 20px;text-align:center;color:#fff}
+.call-header .avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:26px}
+.call-header h2{font-size:17px;font-weight:600}
+.call-header p{font-size:12px;opacity:.8;margin-top:3px}
+.chat-body{padding:14px;min-height:340px;background:#f2f2f7;transition:min-height .3s}
+.msg{margin-bottom:10px;display:flex;gap:7px;align-items:flex-end;opacity:0;animation:msgIn .4s ease forwards}
+.msg.ai{justify-content:flex-start}
+.msg.user{justify-content:flex-end}
+.msg .bubble{max-width:78%;padding:10px 14px;border-radius:18px;font-size:13.5px;line-height:1.5}
+.msg.ai .bubble{background:#fff;color:#1d1d1f;border-bottom-left-radius:4px}
+.msg.user .bubble{background:#007aff;color:#fff;border-bottom-right-radius:4px}
+.msg .icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.msg-system{text-align:center;margin:12px 0;opacity:0;animation:msgIn .4s ease forwards}
+.msg-system .sys-bubble{display:inline-block;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:600;color:#fff}
+@keyframes msgIn{to{opacity:1}}
+.home-bar{width:140px;height:5px;background:#1d1d1f;border-radius:3px;margin:8px auto 12px}
+.chat-panel{display:none}
+.chat-panel.active{display:block}
+.badge-row{display:flex;gap:6px;justify-content:center;margin-top:4px;flex-wrap:wrap}
+.feature-badge{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;color:#fff}
+</style></head><body>
+<div class="page-title">🤖 AI Recepcjonistka — 3 Tryby</div>
+<div class="page-subtitle">Wybierz tryb, który pasuje do Twojego gabinetu</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showMode(0)">📅 Pełna rezerwacja</button>
+  <button class="tab" onclick="showMode(1)">📱 SMS Link</button>
+  <button class="tab" onclick="showMode(2)">📞 FAQ + Przekierowanie</button>
+</div>
+
+<div class="mode-desc" id="modeDesc">
+  <b>AI rezerwuje wizytę podczas rozmowy.</b> Sprawdza Google Calendar, wybiera specjalistę, tworzy wizytę — bez udziału człowieka.
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="call-header" id="callHeader" style="background:linear-gradient(135deg,#34c759,#30b855)">
+    <div class="avatar">🦷</div>
+    <h2>Stomatologia Kowalski</h2>
+    <p id="callSubtitle">🟢 AI Recepcjonistka · 20:35 · po godzinach</p>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <!-- Mode 0: Full booking -->
+    <div class="chat-panel active" id="mode0">
+      <div class="msg ai" style="animation-delay:0s"><div class="icon" style="background:#34c759;color:#fff">🤖</div><div class="bubble">Dzień dobry, gabinet Stomatologia Kowalski, w czym mogę pomóc?</div></div>
+      <div class="msg user" style="animation-delay:.5s"><div class="bubble">Chciałbym umówić się na przegląd</div></div>
+      <div class="msg ai" style="animation-delay:1s"><div class="icon" style="background:#34c759;color:#fff">🤖</div><div class="bubble">Sprawdzam wolne terminy… Najbliższy to <b>wtorek 11 marca o 10:00</b> u Anny. Czy pasuje?</div></div>
+      <div class="msg user" style="animation-delay:1.5s"><div class="bubble">Tak, pasuje</div></div>
+      <div class="msg ai" style="animation-delay:2s"><div class="icon" style="background:#34c759;color:#fff">🤖</div><div class="bubble">Poproszę imię i numer telefonu.</div></div>
+      <div class="msg user" style="animation-delay:2.5s"><div class="bubble">Anna Nowak, 123 456 789</div></div>
+      <div class="msg ai" style="animation-delay:3s"><div class="icon" style="background:#34c759;color:#fff">🤖</div><div class="bubble">Gotowe! ✅ Wizyta zarezerwowana — wtorek 11.03, godz. 10:00, specjalista Anna. Kod wizyty: <b>42</b>. Wysłałam SMS z potwierdzeniem. Do zobaczenia!</div></div>
+    </div>
+
+    <!-- Mode 1: SMS Link -->
+    <div class="chat-panel" id="mode1">
+      <div class="msg ai" style="animation-delay:0s"><div class="icon" style="background:#007aff;color:#fff">🤖</div><div class="bubble">Dzień dobry, gabinet Stomatologia Kowalski, w czym mogę pomóc?</div></div>
+      <div class="msg user" style="animation-delay:.5s"><div class="bubble">Chcę umówić wizytę na wybielanie</div></div>
+      <div class="msg ai" style="animation-delay:1s"><div class="icon" style="background:#007aff;color:#fff">🤖</div><div class="bubble">Chętnie pomogę! Poproszę imię i numer telefonu.</div></div>
+      <div class="msg user" style="animation-delay:1.5s"><div class="bubble">Kasia Wiśniewska, 987 654 321</div></div>
+      <div class="msg ai" style="animation-delay:2s"><div class="icon" style="background:#007aff;color:#fff">🤖</div><div class="bubble">Dziękuję! Za chwilę wyślę SMS z linkiem — tam może Pani <b>wybrać specjalistę, dzień i godzinę</b>. Wygodnie z telefonu 📱</div></div>
+      <div class="msg-system" style="animation-delay:2.8s"><div class="sys-bubble" style="background:linear-gradient(135deg,#007aff,#5856d6)">📨 SMS z linkiem wysłany!</div></div>
+      <div class="msg ai" style="animation-delay:3.2s"><div class="icon" style="background:#007aff;color:#fff">🤖</div><div class="bubble">Gotowe! SMS wysłany. Proszę kliknąć link i wybrać termin. Do usłyszenia!</div></div>
+    </div>
+
+    <!-- Mode 2: FAQ + Transfer -->
+    <div class="chat-panel" id="mode2">
+      <div class="msg ai" style="animation-delay:0s"><div class="icon" style="background:#ff9f0a;color:#fff">🤖</div><div class="bubble">Dzień dobry, gabinet Stomatologia Kowalski, w czym mogę pomóc?</div></div>
+      <div class="msg user" style="animation-delay:.5s"><div class="bubble">Ile kosztuje wybielanie?</div></div>
+      <div class="msg ai" style="animation-delay:1s"><div class="icon" style="background:#ff9f0a;color:#fff">🤖</div><div class="bubble">Wybielanie zębów to <b>250 zł</b>, zabieg trwa około 45 minut. Mogę też pomóc umówić wizytę!</div></div>
+      <div class="msg user" style="animation-delay:1.5s"><div class="bubble">A można na jutro?</div></div>
+      <div class="msg ai" style="animation-delay:2s"><div class="icon" style="background:#ff9f0a;color:#fff">🤖</div><div class="bubble">Oczywiście! Łączę z recepcją, która znajdzie najlepszy termin. Proszę chwilkę poczekać…</div></div>
+      <div class="msg-system" style="animation-delay:2.8s"><div class="sys-bubble" style="background:linear-gradient(135deg,#ff9f0a,#ff6723)">🔄 Łączenie z recepcją…</div></div>
+      <div class="msg ai" style="animation-delay:3.5s"><div class="icon" style="background:#ff9f0a;color:#fff">👩‍💼</div><div class="bubble">Dzień dobry, recepcja Stomatologia Kowalski. Wiem, że interesuje Pana wybielanie — sprawdzam wolne terminy…</div></div>
+    </div>
+  </div>
+  <div class="home-bar"></div>
+</div>
+
+<div class="badge-row" id="badges">
+  <span class="feature-badge" style="background:#34c759">Google Calendar</span>
+  <span class="feature-badge" style="background:#007aff">BRK obsługa</span>
+  <span class="feature-badge" style="background:#ff9f0a">24/7</span>
+  <span class="feature-badge" style="background:#af52de">Retell AI</span>
+</div>
+
+<script>
+const modes = [
+  {
+    desc: '<b>AI rezerwuje wizytę podczas rozmowy.</b> Sprawdza Google Calendar, wybiera specjalistę, tworzy wizytę — bez udziału człowieka.',
+    bg: 'linear-gradient(135deg,#34c759,#30b855)',
+    sub: '🟢 AI Recepcjonistka · 20:35 · pełna rezerwacja'
+  },
+  {
+    desc: '<b>AI zbiera dane, wysyła SMS z linkiem.</b> Pacjent sam wybiera specjalistę i godzinę na stronie. Idealne gdy potrzebujesz więcej kontroli.',
+    bg: 'linear-gradient(135deg,#007aff,#5856d6)',
+    sub: '🔵 AI Recepcjonistka · 20:35 · SMS Link'
+  },
+  {
+    desc: '<b>AI odpowiada na pytania i przekierowuje.</b> Cennik, godziny otwarcia, lokalizacja — AI odpowiada. Rezerwacja? Łączy z recepcją.',
+    bg: 'linear-gradient(135deg,#ff9f0a,#ff6723)',
+    sub: '🟠 AI Recepcjonistka · 20:35 · FAQ + transfer'
+  }
+];
+function showMode(i) {
+  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  document.querySelectorAll('.chat-panel').forEach((p,j) => {
+    p.classList.toggle('active', j===i);
+    if (j===i) p.querySelectorAll('.msg,.msg-system').forEach(m => {m.style.opacity='0'; void m.offsetWidth; m.style.opacity=''; m.style.animation='none'; void m.offsetWidth; m.style.animation='';});
+  });
+  document.getElementById('modeDesc').innerHTML = modes[i].desc;
+  document.getElementById('callHeader').style.background = modes[i].bg;
+  document.getElementById('callSubtitle').textContent = modes[i].sub;
+}
+</script>
+</body></html>

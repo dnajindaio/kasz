@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panel gabinetu</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f2f7;--card:rgba(255,255,255,.78);--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#aeaeb2;--accent:#007aff;--radius-lg:22px;--radius-md:16px;--blur:blur(40px) saturate(180%)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh}
+.top-tabs{display:flex;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+.top-tab{flex:1;padding:14px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s}
+.top-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.top-tab:hover:not(.active){color:var(--text-primary)}
+.panel{display:none;padding:20px;max-width:500px;margin:0 auto}
+.panel.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero-sm{text-align:center;padding:24px 0 20px}
+.hero-sm-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.hero-sm h2{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.hero-sm p{font-size:14px;color:var(--text-secondary);margin-top:4px}
+.glass{background:var(--card);backdrop-filter:var(--blur);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;box-shadow:0 0 0 .5px rgba(0,0,0,.04),0 2px 20px rgba(0,0,0,.04)}
+.d-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(60,60,67,.06);font-size:15px}
+.d-row:last-child{border:none}
+.d-label{color:var(--text-secondary);font-weight:500}
+.d-value{font-weight:600}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:var(--radius-md);font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;margin-bottom:10px;color:#fff;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 50%);pointer-events:none}
+.btn-blue{background:linear-gradient(135deg,#007aff,#5856d6);box-shadow:0 4px 16px rgba(0,122,255,.2)}
+.btn-orange{background:linear-gradient(135deg,#ff9f0a,#ff6723);box-shadow:0 4px 16px rgba(255,159,10,.2)}
+.btn-red{background:linear-gradient(135deg,#ff3b30,#d63031);box-shadow:0 4px 16px rgba(255,59,48,.2)}
+.btn-green{background:linear-gradient(135deg,#34c759,#30b855);box-shadow:0 4px 16px rgba(52,199,89,.2)}
+.section-label{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;margin-top:16px}
+/* Staff panel specific */
+.staff-login{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,122,255,.06);border-radius:14px;margin-bottom:16px}
+.staff-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;background:#007aff}
+.staff-info .staff-name{font-size:15px;font-weight:600}
+.staff-info .staff-role{font-size:12px;color:var(--text-secondary)}
+.appt-card{display:flex;gap:12px;padding:12px;border-radius:14px;background:rgba(0,0,0,.02);margin-bottom:8px}
+.appt-time-col{min-width:52px;text-align:center}
+.appt-hour{font-size:16px;font-weight:700;color:var(--accent)}
+.appt-dur{font-size:11px;color:var(--text-tertiary)}
+.appt-details{flex:1}
+.appt-service{font-size:14px;font-weight:600}
+.appt-patient{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.appt-worker-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;margin-top:4px}
+.progress-bar{width:100%;height:8px;border-radius:4px;background:rgba(0,0,0,.06);overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;border-radius:4px;transition:width .5s}
+/* Report */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat-card{background:rgba(0,0,0,.02);border-radius:14px;padding:16px;text-align:center}
+.stat-val{font-size:28px;font-weight:900;letter-spacing:-.5px}
+.stat-label{font-size:12px;color:var(--text-secondary);margin-top:4px;font-weight:500}
+.stat-delta{font-size:11px;font-weight:600;margin-top:2px}
+.stat-delta.up{color:#34c759}
+.stat-delta.down{color:#ff3b30}
+.heatmap{display:grid;grid-template-columns:auto repeat(10,1fr);gap:2px;font-size:10px;margin:12px 0}
+.hm-label{font-weight:600;color:var(--text-secondary);display:flex;align-items:center;padding-right:4px}
+.hm-cell{aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:9px;color:rgba(0,0,0,.5)}
+.worker-stat{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(60,60,67,.06)}
+.worker-stat:last-child{border:none}
+.ws-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.ws-info{flex:1}
+.ws-name{font-size:14px;font-weight:600}
+.ws-hours{font-size:12px;color:var(--text-secondary)}
+.ws-revenue{font-size:14px;font-weight:700;color:var(--accent)}
+.footer{text-align:center;padding:24px 20px;color:var(--text-tertiary);font-size:12px}
+</style></head><body>
+
+<div class="top-tabs">
+  <div class="top-tab active" onclick="showPanel(0)">📋 Pacjent</div>
+  <div class="top-tab" onclick="showPanel(1)">🧑‍⚕️ Pracownik</div>
+  <div class="top-tab" onclick="showPanel(2)">📊 Raport</div>
+  <div class="top-tab" onclick="showPanel(3)">⚡ BRK</div>
+</div>
+
+<!-- PANEL 0: Patient manage visit -->
+<div class="panel active" id="panel0">
+  <div class="hero-sm">
+    <div class="hero-sm-icon" style="background:linear-gradient(135deg,#ff9f0a,#ff6723)">📋</div>
+    <h2>Zarządzaj wizytą</h2>
+    <p>Pacjent sam zmienia termin lub odwołuje</p>
+  </div>
+  <div class="glass">
+    <div class="d-row"><span class="d-label">Pacjent</span><span class="d-value">Anna Nowak</span></div>
+    <div class="d-row"><span class="d-label">Usługa</span><span class="d-value">Przegląd stomatologiczny</span></div>
+    <div class="d-row"><span class="d-label">Data</span><span class="d-value">wtorek, 11.03</span></div>
+    <div class="d-row"><span class="d-label">Godzina</span><span class="d-value">10:00</span></div>
+    <div class="d-row"><span class="d-label">Specjalista</span><span class="d-value">Anna</span></div>
+    <div class="d-row"><span class="d-label">Kod</span><span class="d-value" style="font-size:20px;font-weight:800;letter-spacing:4px">42</span></div>
+  </div>
+  <button class="btn btn-orange">📅 Przełóż wizytę</button>
+  <button class="btn btn-red">❌ Odwołaj wizytę</button>
+  <div style="text-align:center;color:var(--text-tertiary);font-size:13px;margin-top:8px">Zero telefonów do gabinetu — pacjent ogarnia sam</div>
+</div>
+
+<!-- PANEL 1: Staff booking page -->
+<div class="panel" id="panel1">
+  <div class="hero-sm">
+    <div class="hero-sm-icon" style="background:linear-gradient(135deg,#007aff,#5856d6)">🧑‍⚕️</div>
+    <h2>Panel pracownika</h2>
+    <p>Umów wizytę kontrolną bez recepcji</p>
+  </div>
+
+  <div class="staff-login">
+    <div class="staff-avatar">A</div>
+    <div class="staff-info">
+      <div class="staff-name">Anna</div>
+      <div class="staff-role">Zalogowana · worker_1</div>
+    </div>
+  </div>
+
+  <div class="section-label">Dzisiejsze wizyty</div>
+  <div class="glass">
+    <div class="appt-card">
+      <div class="appt-time-col"><div class="appt-hour">08:00</div><div class="appt-dur">30 min</div></div>
+      <div class="appt-details">
+        <div class="appt-service">Przegląd stomatologiczny</div>
+        <div class="appt-patient">Jan Kowalski · Kod: 37</div>
+        <div class="appt-worker-badge" style="background:#007aff">Anna</div>
+      </div>
+    </div>
+    <div class="appt-card">
+      <div class="appt-time-col"><div class="appt-hour">09:00</div><div class="appt-dur">60 min</div></div>
+      <div class="appt-details">
+        <div class="appt-service">Leczenie kanałowe</div>
+        <div class="appt-patient">Maria Wiśniewska · Kod: 51</div>
+        <div class="appt-worker-badge" style="background:#007aff">Anna</div>
+      </div>
+    </div>
+    <div class="appt-card">
+      <div class="appt-time-col"><div class="appt-hour">10:00</div><div class="appt-dur">30 min</div></div>
+      <div class="appt-details">
+        <div class="appt-service">Przegląd stomatologiczny</div>
+        <div class="appt-patient">Anna Nowak · Kod: 42</div>
+        <div class="appt-worker-badge" style="background:#007aff">Anna</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:8px 0">
+      <div style="font-size:13px;color:var(--text-secondary);font-weight:600">Wykorzystanie dziś</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:62%;background:linear-gradient(90deg,#34c759,#007aff)"></div></div>
+      <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px">62% — 5/8 slotów zajętych</div>
+    </div>
+  </div>
+
+  <div class="section-label">Szybka rezerwacja kontrolna</div>
+  <div class="glass">
+    <div class="d-row"><span class="d-label">Pacjent</span><span class="d-value">Maria Wiśniewska</span></div>
+    <div class="d-row"><span class="d-label">Wizyta kontrolna</span><span class="d-value">za 6 miesięcy</span></div>
+    <div class="d-row"><span class="d-label">Preferowany termin</span><span class="d-value">środa, 10.09, 09:00</span></div>
+    <div class="d-row"><span class="d-label">Ten sam specjalista</span><span class="d-value" style="color:#34c759">Tak ✔</span></div>
+  </div>
+  <button class="btn btn-green">✅ Zarezerwuj wizytę kontrolną</button>
+  <div style="text-align:center;color:var(--text-tertiary);font-size:13px;margin-top:8px">Pacjent jest w gabinecie → pracownik rezerwuje od ręki</div>
+</div>
+
+<!-- PANEL 2: Monthly report -->
+<div class="panel" id="panel2">
+  <div class="hero-sm">
+    <div class="hero-sm-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">📊</div>
+    <h2>Raport miesięczny</h2>
+    <p>Marzec 2026 · automatyczny email do właściciela</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-val" style="color:#34c759">24 850 zł</div>
+      <div class="stat-label">Przychód</div>
+      <div class="stat-delta up">↑ +12% vs luty</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:#007aff">156</div>
+      <div class="stat-label">Wizyt</div>
+      <div class="stat-delta up">↑ +8% vs luty</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:#ff9f0a">78%</div>
+      <div class="stat-label">Wykorzystanie</div>
+      <div class="stat-delta up">↑ +5pp vs luty</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:#af52de">4.2%</div>
+      <div class="stat-label">No-show rate</div>
+      <div class="stat-delta up">↓ -3pp vs luty</div>
+    </div>
+  </div>
+
+  <div class="section-label">Statystyki pracowników</div>
+  <div class="glass">
+    <div class="worker-stat">
+      <div class="ws-avatar" style="background:#007aff">A</div>
+      <div class="ws-info"><div class="ws-name">Anna</div><div class="ws-hours">82h · 48 wizyt</div></div>
+      <div class="ws-revenue">7 200 zł</div>
+    </div>
+    <div class="worker-stat">
+      <div class="ws-avatar" style="background:#ff9f0a">K</div>
+      <div class="ws-info"><div class="ws-name">Kasia</div><div class="ws-hours">76h · 42 wizyty</div></div>
+      <div class="ws-revenue">6 350 zł</div>
+    </div>
+    <div class="worker-stat">
+      <div class="ws-avatar" style="background:#34c759">M</div>
+      <div class="ws-info"><div class="ws-name">Magda</div><div class="ws-hours">68h · 38 wizyt</div></div>
+      <div class="ws-revenue">5 900 zł</div>
+    </div>
+    <div class="worker-stat">
+      <div class="ws-avatar" style="background:#af52de">T</div>
+      <div class="ws-info"><div class="ws-name">Tomek</div><div class="ws-hours">72h · 28 wizyt</div></div>
+      <div class="ws-revenue">5 400 zł</div>
+    </div>
+  </div>
+
+  <div class="section-label">Heatmapa — obciążenie godzinowe</div>
+  <div class="glass">
+    <div class="heatmap">
+      <div class="hm-label"></div>
+      <div class="hm-label">8</div><div class="hm-label">9</div><div class="hm-label">10</div><div class="hm-label">11</div><div class="hm-label">12</div><div class="hm-label">13</div><div class="hm-label">14</div><div class="hm-label">15</div><div class="hm-label">16</div><div class="hm-label">17</div>
+      <div class="hm-label">Pon</div>
+      <div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(0,70%,65%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,90%)">1</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div>
+      <div class="hm-label">Wt</div>
+      <div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(0,70%,60%)">4</div><div class="hm-cell" style="background:hsl(0,80%,55%)">4</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(120,60%,90%)">1</div>
+      <div class="hm-label">Śr</div>
+      <div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(0,70%,60%)">4</div><div class="hm-cell" style="background:hsl(0,80%,55%)">4</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(120,60%,90%)">1</div>
+      <div class="hm-label">Czw</div>
+      <div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(0,70%,60%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(120,60%,90%)">1</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div>
+      <div class="hm-label">Pt</div>
+      <div class="hm-cell" style="background:hsl(0,80%,55%)">4</div><div class="hm-cell" style="background:hsl(0,80%,55%)">4</div><div class="hm-cell" style="background:hsl(0,70%,60%)">4</div><div class="hm-cell" style="background:hsl(30,70%,65%)">4</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(60,60%,75%)">3</div><div class="hm-cell" style="background:hsl(120,60%,85%)">2</div><div class="hm-cell" style="background:hsl(120,60%,90%)">1</div>
+    </div>
+    <div style="font-size:11px;color:var(--text-tertiary);text-align:center">🟢 1-2 wizyty · 🟡 3 wizyty · 🔴 4 wizyty (pełne obciążenie)</div>
+  </div>
+
+  <div class="section-label">Najpopularniejsze usługi</div>
+  <div class="glass">
+    <div class="d-row"><span class="d-label">🥇 Przegląd stomatologiczny</span><span class="d-value">52 wizyt</span></div>
+    <div class="d-row"><span class="d-label">🥈 Scaling</span><span class="d-value">34 wizyty</span></div>
+    <div class="d-row"><span class="d-label">🥉 Leczenie kanałowe</span><span class="d-value">28 wizyt</span></div>
+    <div class="d-row"><span class="d-label">4. Wybielanie</span><span class="d-value">22 wizyty</span></div>
+    <div class="d-row"><span class="d-label">5. Wypełnienie</span><span class="d-value">14 wizyt</span></div>
+  </div>
+  <div style="text-align:center;color:var(--text-tertiary);font-size:13px">Raport wysyłany automatycznie 1. dnia miesiąca na email właściciela</div>
+</div>
+
+<!-- PANEL 3: BRK handling -->
+<div class="panel" id="panel3">
+  <div class="hero-sm">
+    <div class="hero-sm-icon" style="background:linear-gradient(135deg,#ff3b30,#d63031)">🛡️</div>
+    <h2>Obsługa BRK</h2>
+    <p>Przerwy pracowników i zamknięcia gabinetu</p>
+  </div>
+
+  <div class="section-label">⛔ Gabinet nieczynny (BRK globalny)</div>
+  <div class="glass">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
+      <div style="font-size:28px">🏥</div>
+      <div>
+        <div style="font-size:15px;font-weight:600">Cały gabinet zamknięty</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;line-height:1.5">
+          Wydarzenie <b>"BRK"</b> w Google Calendar <b>bez</b> nazwy pracownika → blokuje <b>wszystkich</b> pracowników na ten czas.
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(255,59,48,.08);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5">
+      <div style="font-weight:600;color:#ff3b30;margin-bottom:4px">Przykład w kalendarzu:</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:8px;border-left:4px solid #ff3b30;font-size:13px">
+        <span>📅</span>
+        <div><b>BRK — Remont</b><br><span style="color:var(--text-secondary)">11.03, cały dzień</span></div>
+      </div>
+      <div style="margin-top:8px;color:var(--text-secondary)">
+        → AI mówi: <i>"Gabinet jest nieczynny w tym terminie."</i><br>
+        → Strona: brak terminów na ten dzień
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">⏸️ Przerwa pracownika (BRK indywidualny)</div>
+  <div class="glass">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
+      <div style="font-size:28px">🧑‍⚕️</div>
+      <div>
+        <div style="font-size:15px;font-weight:600">Jeden pracownik niedostępny</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;line-height:1.5">
+          Wydarzenie <b>"BRK (Anna)"</b> z nazwą pracownika → blokuje <b>tylko Annę</b>. Reszta zespołu dostępna normalnie.
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(255,159,10,.08);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5">
+      <div style="font-weight:600;color:#c27400;margin-bottom:4px">Przykład w kalendarzu:</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:8px;border-left:4px solid #ff9f0a;font-size:13px">
+        <span>📅</span>
+        <div><b>BRK — Urlop (Anna)</b><br><span style="color:var(--text-secondary)">11.03, 13:00–15:00</span></div>
+      </div>
+      <div style="margin-top:8px;color:var(--text-secondary)">
+        → Anna usunięta z dostępnych specjalistów 13:00–15:00<br>
+        → Kasia, Magda, Tomek — dostępni normalnie<br>
+        → Karta Anny na stronie: <span style="color:#ff3b30;font-weight:600">⛔ przerwa</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">✅ Gdzie działa BRK</div>
+  <div class="glass">
+    <div class="d-row"><span class="d-label">🤖 Rozmowa AI</span><span class="d-value" style="color:#34c759">Obsługiwane</span></div>
+    <div class="d-row"><span class="d-label">📱 Strona rezerwacji</span><span class="d-value" style="color:#34c759">Obsługiwane</span></div>
+    <div class="d-row"><span class="d-label">🔄 Przełożenie wizyty</span><span class="d-value" style="color:#34c759">Obsługiwane</span></div>
+    <div class="d-row"><span class="d-label">🧑‍⚕️ Panel pracownika</span><span class="d-value" style="color:#34c759">Obsługiwane</span></div>
+  </div>
+</div>
+
+<div class="footer">Stomatologia Kowalski · Inteligentna automatyzacja gabinetu</div>
+
+<script>
+function showPanel(i) {
+  document.querySelectorAll('.top-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  document.querySelectorAll('.panel').forEach((p,j) => p.classList.toggle('active', j===i));
+}
+</script>
+</body></html>

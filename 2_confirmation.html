@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wizyta potwierdzona!</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:linear-gradient(135deg,#f0fdfa,#ecfeff);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:16px;gap:20px}
+.card{background:#fff;border-radius:22px;padding:32px 24px;text-align:center;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(8,145,178,.12)}
+.check{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .5s ease}
+.check svg{width:36px;height:36px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+@keyframes pop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+h1{font-size:22px;color:#059669;margin-bottom:8px;font-weight:800}
+.subtitle{color:#64748b;font-size:14px;margin-bottom:24px}
+.details{background:#f0fdfa;border-radius:14px;padding:20px;text-align:left;margin-bottom:20px}
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e0f2fe;font-size:14px}
+.detail-row:last-child{border:none}
+.detail-label{color:#64748b;font-weight:500}
+.detail-value{font-weight:700;color:#1e293b}
+.code-box{background:linear-gradient(135deg,#0891b2,#0e7490);border-radius:14px;padding:20px;color:#fff;margin-bottom:20px}
+.code-label{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:1px}
+.code-value{font-size:32px;font-weight:900;letter-spacing:8px;margin-top:4px}
+.btn-cal{display:inline-block;margin-top:16px;padding:14px 28px;background:linear-gradient(135deg,#007aff,#5856d6);color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 4px 16px rgba(0,122,255,.25)}
+.btn-manage{display:inline-block;margin-top:12px;padding:14px 28px;background:linear-gradient(135deg,#ff9f0a,#ff6723);color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 4px 16px rgba(255,159,10,.25)}
+.footer-text{color:#94a3b8;font-size:12px;line-height:1.5;margin-top:16px}
+/* AUTOMATION TIMELINE */
+.timeline-card{background:#fff;border-radius:22px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(8,145,178,.08)}
+.timeline-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:16px;text-align:center}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:12px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#10b981,#007aff,#ff9f0a,#8b5cf6)}
+.tl-item{position:relative;padding-bottom:20px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-26px;top:2px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px currentColor}
+.tl-dot.done{background:currentColor}
+.tl-dot.pending{background:#fff}
+.tl-label{font-size:13px;font-weight:700;color:#1e293b}
+.tl-desc{font-size:12px;color:#64748b;margin-top:2px;line-height:1.4}
+.tl-time{font-size:11px;color:#94a3b8;margin-top:2px;font-weight:500}
+</style></head><body>
+<div class="card">
+  <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <h1>Wizyta potwierdzona!</h1>
+  <p class="subtitle">Wszystko gotowe. Do zobaczenia!</p>
+  <div class="details">
+    <div class="detail-row"><span class="detail-label">Pacjent</span><span class="detail-value">Anna Nowak</span></div>
+    <div class="detail-row"><span class="detail-label">Usługa</span><span class="detail-value">Przegląd stomatologiczny</span></div>
+    <div class="detail-row"><span class="detail-label">Data</span><span class="detail-value">wtorek, 11.03</span></div>
+    <div class="detail-row"><span class="detail-label">Godzina</span><span class="detail-value">10:00</span></div>
+    <div class="detail-row"><span class="detail-label">Specjalista</span><span class="detail-value">Anna</span></div>
+  </div>
+  <div class="code-box">
+    <div class="code-label">Kod wizyty</div>
+    <div class="code-value">42</div>
+  </div>
+  <a class="btn-cal" href="#">📅 Dodaj do kalendarza</a><br>
+  <a class="btn-manage" href="#">📋 Zarządzaj wizytą</a>
+  <p class="footer-text">Potwierdzenie wysłane SMS-em.<br>Stomatologia Kowalski</p>
+</div>
+
+<div class="timeline-card">
+  <div class="timeline-title">⚡ Co działa się automatycznie</div>
+  <div class="timeline">
+    <div class="tl-item" style="color:#10b981">
+      <div class="tl-dot done"></div>
+      <div class="tl-label">✅ Wizyta w Google Calendar</div>
+      <div class="tl-desc">Automatycznie dodana z kolorem pracownika, kodem wizyty i danymi pacjenta</div>
+      <div class="tl-time">Teraz</div>
+    </div>
+    <div class="tl-item" style="color:#007aff">
+      <div class="tl-dot done"></div>
+      <div class="tl-label">📨 SMS potwierdzenie</div>
+      <div class="tl-desc">Pacjent dostaje SMS z kodem wizyty i linkiem do zarządzania</div>
+      <div class="tl-time">Teraz</div>
+    </div>
+    <div class="tl-item" style="color:#ff9f0a">
+      <div class="tl-dot pending"></div>
+      <div class="tl-label">🔔 SMS przypomnienie</div>
+      <div class="tl-desc">Dzień przed wizytą automatyczny SMS: „Przypomnienie o wizycie jutro…”</div>
+      <div class="tl-time">10.03 o 11:00</div>
+    </div>
+    <div class="tl-item" style="color:#8b5cf6">
+      <div class="tl-dot pending"></div>
+      <div class="tl-label">📊 Raport miesięczny</div>
+      <div class="tl-desc">Wizyta uwzględniona w raporcie: przychód, wykorzystanie, statystyki pracowników</div>
+      <div class="tl-time">1. dzień miesiąca</div>
+    </div>
+  </div>
+</div>
+</body></html>
